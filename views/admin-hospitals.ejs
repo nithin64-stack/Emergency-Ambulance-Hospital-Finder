@@ -1,0 +1,48 @@
+<%- include('partials/header', { title: 'Manage Hospitals', user, messages }) %>
+<div class="row g-4">
+  <div class="col-lg-4">
+    <div class="card shadow-sm border-0 p-4">
+      <h4>Add Hospital</h4>
+      <form action="/admin/hospitals/add" method="POST">
+        <div class="mb-3"><label class="form-label">Name</label><input name="name" class="form-control" required /></div>
+        <div class="mb-3"><label class="form-label">Address</label><input name="address" class="form-control" required /></div>
+        <div class="mb-3"><label class="form-label">Phone</label><input name="phone" class="form-control" required /></div>
+        <div class="row g-3 mb-3">
+          <div class="col"><label class="form-label">Latitude</label><input name="latitude" class="form-control" required /></div>
+          <div class="col"><label class="form-label">Longitude</label><input name="longitude" class="form-control" required /></div>
+        </div>
+        <div class="form-check mb-2"><input class="form-check-input" type="checkbox" name="emergency_available" id="emergency_available"><label class="form-check-label" for="emergency_available">Emergency Available</label></div>
+        <div class="form-check mb-2"><input class="form-check-input" type="checkbox" name="icu_available" id="icu_available"><label class="form-check-label" for="icu_available">ICU Available</label></div>
+        <div class="form-check mb-4"><input class="form-check-input" type="checkbox" name="blood_bank_available" id="blood_bank_available"><label class="form-check-label" for="blood_bank_available">Blood Bank Available</label></div>
+        <button class="btn btn-primary w-100">Add Hospital</button>
+      </form>
+    </div>
+  </div>
+  <div class="col-lg-8">
+    <div class="card shadow-sm border-0 p-4">
+      <h4>Hospital List</h4>
+      <table class="table table-hover">
+        <thead>
+          <tr><th>Name</th><th>Phone</th><th>Emergency</th><th>ICU</th><th>Blood Bank</th><th></th></tr>
+        </thead>
+        <tbody>
+          <% hospitals.forEach((hospital) => { %>
+            <tr>
+              <td><%= hospital.name %></td>
+              <td><%= hospital.phone %></td>
+              <td><%= hospital.emergency_available ? 'Yes' : 'No' %></td>
+              <td><%= hospital.icu_available ? 'Yes' : 'No' %></td>
+              <td><%= hospital.blood_bank_available ? 'Yes' : 'No' %></td>
+              <td>
+                <form action="/admin/hospitals/delete/<%= hospital.id %>" method="POST" onsubmit="return confirm('Delete this hospital?');">
+                  <button class="btn btn-sm btn-danger">Delete</button>
+                </form>
+              </td>
+            </tr>
+          <% }); %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+<%- include('partials/footer') %>

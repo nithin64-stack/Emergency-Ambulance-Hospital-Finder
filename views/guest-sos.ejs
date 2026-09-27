@@ -1,0 +1,28 @@
+<%- include('partials/header', { title: 'Guest SOS', user, messages }) %>
+<div class="row justify-content-center">
+  <div class="col-lg-6 col-md-8">
+    <div class="card shadow-sm border-0 p-4">
+      <h3 class="mb-3 text-danger">🚨 Emergency SOS</h3>
+      <p class="text-muted">Your ambulance request can be sent without signing in. We only need a phone number and your current location.</p>
+
+      <form id="guestSosForm" novalidate>
+        <div class="mb-3">
+          <label for="guestName" class="form-label">Name (optional)</label>
+          <input id="guestName" name="guest_name" type="text" class="form-control" placeholder="Enter your name" />
+        </div>
+        <div class="mb-3">
+          <label for="guestPhone" class="form-label">Phone number <span class="text-danger">*</span></label>
+          <input id="guestPhone" name="guest_phone" type="tel" class="form-control" placeholder="e.g. 9876543210" required />
+        </div>
+        <div class="mb-3">
+          <label for="guestLocation" class="form-label">Location</label>
+          <input id="guestLocation" type="text" class="form-control" value="Fetching your location..." readonly />
+        </div>
+        <input type="hidden" id="guestLatitude" name="latitude" />
+        <input type="hidden" id="guestLongitude" name="longitude" />
+        <button id="guestSosSubmit" type="submit" class="btn btn-danger w-100 btn-lg">Send Emergency Request</button>
+      </form>
+    </div>
+  </div>
+</div>
+<%- include('partials/footer', { scripts: '<script src="/js/guest-sos.js"></script>' }) %>

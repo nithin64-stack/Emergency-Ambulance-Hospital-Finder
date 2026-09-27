@@ -1,0 +1,40 @@
+<%- include('partials/header', { title: 'Driver Dashboard', user, messages }) %>
+<div class="row g-4">
+  <div class="col-lg-4">
+    <div class="card shadow-sm border-0 p-4">
+      <h4>Hello, <strong><%= user.name %></strong></h4>
+      <p>Status: <span class="badge bg-success">Online</span></p>
+      <% if (ambulance) { %>
+        <p>Ambulance: <strong><%= ambulance.ambulance_number %></strong></p>
+        <p>Type: <%= ambulance.ambulance_type %></p>
+      <% } else { %>
+        <p class="text-muted">No ambulance assigned yet.</p>
+      <% } %>
+    </div>
+  </div>
+  <div class="col-lg-8">
+    <div class="card shadow-sm border-0 p-4">
+      <h4>Emergency Requests</h4>
+      <% if (!requests.length) { %>
+        <p>No new requests.</p>
+      <% } %>
+      <div class="list-group">
+        <% requests.forEach((request) => { %>
+          <div class="list-group-item">
+            <h6><%= request.emergency_type %></h6>
+            <p class="mb-1">Patient: <%= request.patient_name %></p>
+            <p class="mb-1 text-muted">Hospital: <%= request.hospital_name || 'Pending' %></p>
+            <p class="mb-1">Status: <span class="badge bg-warning text-dark"><%= request.status %></span></p>
+            <div class="mt-2">
+              <% if (request.status === 'pending') { %>
+                <form class="d-inline" action="/driver/request/<%= request.id %>/accept" method="POST"><button class="btn btn-sm btn-success">Accept</button></form>
+                <form class="d-inline" action="/driver/request/<%= request.id %>/reject" method="POST"><button class="btn btn-sm btn-danger">Reject</button></form>
+              <% } %>
+            </div>
+          </div>
+        <% }); %>
+      </div>
+    </div>
+  </div>
+</div>
+<%- include('partials/footer', { scripts: `<script src="/js/driver-dashboard.js"></script>` }) %>

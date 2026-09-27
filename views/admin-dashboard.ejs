@@ -1,0 +1,52 @@
+<%- include('partials/header', { title: 'Admin Dashboard', user, messages }) %>
+<div class="row g-4">
+  <div class="col-lg-3">
+    <div class="card shadow-sm border-0 p-4">
+      <h5>Total Users</h5>
+      <h2><%= stats.totalUsers %></h2>
+    </div>
+  </div>
+  <div class="col-lg-3">
+    <div class="card shadow-sm border-0 p-4">
+      <h5>Total Hospitals</h5>
+      <h2><%= stats.totalHospitals %></h2>
+    </div>
+  </div>
+  <div class="col-lg-3">
+    <div class="card shadow-sm border-0 p-4">
+      <h5>Total Ambulances</h5>
+      <h2><%= stats.totalAmbulances %></h2>
+    </div>
+  </div>
+  <div class="col-lg-3">
+    <div class="card shadow-sm border-0 p-4">
+      <h5>Active Emergencies</h5>
+      <h2><%= stats.activeEmergencies %></h2>
+    </div>
+  </div>
+</div>
+<div class="row g-4 mt-4">
+  <div class="col-lg-6">
+    <div class="card shadow-sm border-0 p-4">
+      <h5>Emergency Summary</h5>
+      <canvas id="statsChart" data-users="<%= stats.totalUsers %>" data-hospitals="<%= stats.totalHospitals %>" data-ambulances="<%= stats.totalAmbulances %>" data-active="<%= stats.activeEmergencies %>" data-completed="<%= stats.completedEmergencies %>"></canvas>
+    </div>
+  </div>
+  <div class="col-lg-6">
+    <div class="card shadow-sm border-0 p-4">
+      <h5>Recent Requests</h5>
+      <div class="list-group">
+        <% if (!requests.length) { %>
+          <div class="list-group-item">No requests yet.</div>
+        <% } %>
+        <% requests.forEach((request) => { %>
+          <div class="list-group-item">
+            <strong><%= request.emergency_type %></strong> - <%= request.status %>
+            <div class="small text-muted">Patient: <%= request.patient_name %> | Ambulance: <%= request.ambulance_number || 'Pending' %></div>
+          </div>
+        <% }); %>
+      </div>
+    </div>
+  </div>
+</div>
+<%- include('partials/footer', { scripts: `<script src="https://cdn.jsdelivr.net/npm/chart.js"></script><script src="/js/admin-dashboard.js"></script>` }) %>

@@ -1,0 +1,38 @@
+<%- include('partials/header', { title: 'Hospital Finder', user, messages }) %>
+<div class="row g-4">
+  <div class="col-lg-8">
+    <div id="hospitalMap" class="rounded-4 shadow-sm" style="height: 560px;"></div>
+  </div>
+  <div class="col-lg-4">
+    <div class="card shadow-sm border-0 p-4">
+      <h4>Nearby Hospitals</h4>
+      <div class="list-group">
+        <% hospitals.forEach((hospital) => { %>
+          <% const hospitalPhone = hospital.phone && hospital.phone.trim(); %>
+          <div class="list-group-item hospital-card">
+            <h6><%= hospital.name %></h6>
+            <p class="mb-1"><%= hospital.address %></p>
+            <p class="mb-1 text-muted">Phone: <%= hospitalPhone || 'Not available' %></p>
+            <div class="d-flex gap-2 flex-wrap">
+              <span class="badge bg-danger"><%= hospital.emergency_available ? 'Emergency' : 'No Emergency' %></span>
+              <span class="badge bg-info"><%= hospital.icu_available ? 'ICU' : 'No ICU' %></span>
+              <span class="badge bg-success"><%= hospital.blood_bank_available ? 'Blood Bank' : 'No Blood Bank' %></span>
+            </div>
+            <div class="mt-2">
+              <a
+                href="<%= hospitalPhone ? 'tel:' + hospitalPhone : '#' %>"
+                class="btn btn-sm btn-outline-primary call-hospital"
+                data-phone="<%= hospitalPhone || '' %>"
+                data-name="<%= hospital.name %>"
+              >
+                Call
+              </a>
+              <button class="btn btn-sm btn-primary btn-directions" data-lat="<%= hospital.latitude %>" data-lng="<%= hospital.longitude %>">Directions</button>
+            </div>
+          </div>
+        <% }); %>
+      </div>
+    </div>
+  </div>
+</div>
+<%- include('partials/footer', { scripts: `<script src="/js/hospital-finder.js"></script>` }) %>

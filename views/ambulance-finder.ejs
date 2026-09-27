@@ -1,0 +1,33 @@
+<%- include('partials/header', { title: 'Ambulance Finder', user, messages }) %>
+<div class="row g-4">
+  <div class="col-lg-8">
+    <div class="card shadow-sm border-0 p-4 mb-4">
+      <h4>Available Ambulances</h4>
+      <div class="row g-3">
+        <% ambulances.forEach((ambulance) => { %>
+          <div class="col-md-6">
+            <div class="card shadow-sm border-0 p-3">
+              <h6><%= ambulance.ambulance_number %></h6>
+              <p class="mb-1">Driver: <%= ambulance.driver_name || 'Unassigned' %></p>
+              <p class="mb-1 text-muted">Type: <%= ambulance.ambulance_type %></p>
+              <p class="mb-1">Status: <span class="badge bg-success"><%= ambulance.status %></span></p>
+              <form class="request-ambulance-form" data-ambulance-id="<%= ambulance.id %>" action="/request-ambulance" method="POST">
+                <input type="hidden" name="ambulance_id" value="<%= ambulance.id %>" />
+                <input type="hidden" name="latitude" value="" />
+                <input type="hidden" name="longitude" value="" />
+                <button type="submit" class="btn btn-sm btn-danger request-ambulance">Request Ambulance</button>
+              </form>
+            </div>
+          </div>
+        <% }); %>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-4">
+    <div class="card shadow-sm border-0 p-4">
+      <h5>Guidance</h5>
+      <p>Use this page to view available ambulances near you and submit a request quickly.</p>
+    </div>
+  </div>
+</div>
+<%- include('partials/footer', { scripts: `<script src="/js/ambulance-finder.js"></script>` }) %>

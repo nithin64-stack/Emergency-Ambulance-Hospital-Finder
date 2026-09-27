@@ -1,0 +1,71 @@
+<%- include('partials/header', { title: 'Dashboard', user, messages }) %>
+<div class="row g-4">
+  <div class="col-lg-4">
+    <div class="card shadow-sm border-0 p-4">
+      <h4>Welcome, <strong><%= user.name %></strong></h4>
+      <p>Current role: <span class="badge bg-primary"><%= user.role %></span></p>
+      <% if (showSetPassword) { %>
+        <form action="/auth/set-password" method="POST" class="border rounded p-3 mb-3">
+          <h6>Create Local Password</h6>
+          <label class="form-label" for="localPassword">Password</label>
+          <input id="localPassword" type="password" name="password" class="form-control mb-2" minlength="8" required />
+          <label class="form-label" for="confirmLocalPassword">Confirm Password</label>
+          <input id="confirmLocalPassword" type="password" name="confirmPassword" class="form-control mb-2" minlength="8" required />
+          <button type="submit" class="btn btn-primary w-100">Create Local Password</button>
+        </form>
+      <% } %>
+      <div class="mb-3">
+        <label class="form-label">Current location</label>
+        <input id="currentLocation" type="text" class="form-control" value="Fetching location..." readonly />
+      </div>
+      <a href="/hospital-finder" class="btn btn-outline-primary w-100 mb-2">🏥 Hospital Finder</a>
+      <a href="/ambulance-finder" class="btn btn-outline-secondary w-100 mb-2">🚑 Ambulance Finder</a>
+      <button id="sosButton" class="btn btn-danger btn-lg w-100">🚨 SOS EMERGENCY</button>
+    </div>
+  </div>
+  <div class="col-lg-8">
+    <div class="card shadow-sm border-0 p-4 mb-4">
+      <h5>Nearby Hospitals</h5>
+      <div class="row g-3">
+        <% hospitals.forEach((hospital) => { %>
+          <div class="col-md-6">
+            <div class="card border-0 shadow-sm p-3">
+              <h6><%= hospital.name %></h6>
+              <p class="mb-1"><%= hospital.address %></p>
+              <p class="mb-1 text-muted">Phone: <%= hospital.phone %></p>
+            </div>
+          </div>
+        <% }); %>
+      </div>
+    </div>
+    <div class="card shadow-sm border-0 p-4 mb-4">
+      <h5>Nearby Ambulances</h5>
+      <div class="row g-3">
+        <% ambulances.forEach((ambulance) => { %>
+          <div class="col-md-6">
+            <div class="card border-0 shadow-sm p-3">
+              <h6><%= ambulance.ambulance_number %></h6>
+              <p class="mb-1">Driver: <%= ambulance.driver_name || 'Unassigned' %></p>
+              <p class="mb-1 text-muted">Type: <%= ambulance.ambulance_type %></p>
+            </div>
+          </div>
+        <% }); %>
+      </div>
+    </div>
+    <div class="card shadow-sm border-0 p-4">
+      <h5>Emergency History</h5>
+      <div class="list-group">
+        <% if (!requests.length) { %>
+          <div class="list-group-item">No emergency history available.</div>
+        <% } %>
+        <% requests.forEach((request) => { %>
+          <div class="list-group-item">
+            <strong><%= request.emergency_type %></strong> - <%= request.status %>
+            <div class="small text-muted">Hospital: <%= request.hospital_name || 'Pending' %> | Ambulance: <%= request.driver_name || 'Pending' %></div>
+          </div>
+        <% }); %>
+      </div>
+    </div>
+  </div>
+</div>
+<%- include('partials/footer', { scripts: `<script src="/js/dashboard.js"></script>` }) %>

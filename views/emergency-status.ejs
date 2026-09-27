@@ -1,0 +1,24 @@
+<%- include('partials/header', { title: 'Emergency Status', user, messages }) %>
+<div class="row justify-content-center">
+  <div class="col-lg-7">
+    <div class="card shadow-sm border-0 p-4">
+      <h3 class="mb-3">🚑 Emergency request status</h3>
+      <div class="alert alert-warning">
+        <strong>Reference ID:</strong> #<%= request.id %>
+      </div>
+      <ul class="list-group list-group-flush mb-3">
+        <li class="list-group-item"><strong>Name:</strong> <%= request.patient_name || 'Guest' %></li>
+        <li class="list-group-item"><strong>Phone:</strong> <%= request.guest_phone || 'Not provided' %></li>
+        <li class="list-group-item"><strong>Type:</strong> <%= request.emergency_type %></li>
+        <li class="list-group-item"><strong>Status:</strong> <span class="badge bg-warning text-dark"><%= request.status %></span></li>
+        <li class="list-group-item"><strong>Location:</strong> <%= request.latitude %>, <%= request.longitude %></li>
+      </ul>
+      <p class="text-muted mb-0">An ambulance team will review this request. Keep your phone available for updates.</p>
+      <div class="mt-4 d-flex gap-2 flex-wrap">
+        <a href="/" class="btn btn-outline-primary">Back to Home</a>
+        <a href="/guest-sos" class="btn btn-danger">Submit Another Request</a>
+      </div>
+    </div>
+  </div>
+</div>
+<%- include('partials/footer') %>

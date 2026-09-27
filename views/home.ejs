@@ -1,0 +1,39 @@
+<%- include('partials/header', { title: 'Home', user, messages }) %>
+<section class="hero py-5 text-white text-center bg-primary rounded-4 shadow-lg">
+  <div class="container">
+    <h1 class="display-5 fw-bold">Emergency? Help Is Just One Click Away.</h1>
+    <p class="lead mt-3">Find ambulances, hospitals, and request help quickly with a modern emergency response platform.</p>
+    <div class="d-flex justify-content-center gap-3 mt-4 flex-wrap">
+      <a href="/guest-sos" class="btn btn-danger btn-lg px-4">🚨 SOS Emergency</a>
+      <a href="/hospital-finder" class="btn btn-light btn-lg px-4">🏥 Find Hospital</a>
+      <a href="/ambulance-finder" class="btn btn-outline-light btn-lg px-4">🚑 Find Ambulance</a>
+    </div>
+  </div>
+</section>
+<div class="row mt-5 g-4">
+  <div class="col-md-4">
+    <div class="card h-100 shadow-sm border-0">
+      <div class="card-body">
+        <h5 class="card-title">Fast SOS Alerts</h5>
+        <p class="card-text">Send instant emergency requests and inform drivers immediately.</p>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="card h-100 shadow-sm border-0">
+      <div class="card-body">
+        <h5 class="card-title">Nearby Hospitals</h5>
+        <p class="card-text">Browse nearby hospitals with availability and contact details.</p>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="card h-100 shadow-sm border-0">
+      <div class="card-body">
+        <h5 class="card-title">Live Ambulances</h5>
+        <p class="card-text">Track available ambulances and request help with one tap.</p>
+      </div>
+    </div>
+  </div>
+</div>
+<%- include('partials/footer') %>
