@@ -10,14 +10,16 @@ async function getLatestRequestsForPatient(patientId) {
   return rows;
 }
 
-async function createEmergencyRequest(data) {
+async function createEmergencyRequest(data = {}) {
   const conn = await createConnection();
+  const guestName = data.guest_name || data.name || null;
+  const guestPhone = data.guest_phone ?? data.phone ?? null;
   const [result] = await conn.execute(
     'INSERT INTO emergency_requests (patient_id, guest_name, guest_phone, ambulance_id, hospital_id, emergency_type, latitude, longitude, status, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, datetime("now"))',
     [
       data.patient_id ?? null,
-      data.guest_name || null,
-      data.guest_phone || null,
+      guestName,
+      guestPhone,
       data.ambulance_id || null,
       data.hospital_id || null,
       data.emergency_type || 'Medical',
@@ -28,6 +30,10 @@ async function createEmergencyRequest(data) {
   );
   await conn.end();
   return result.insertId;
+}
+
+async function createRequest(data) {
+  return createEmergencyRequest(data);
 }
 
 async function getRequestById(requestId) {
@@ -66,6 +72,7 @@ async function getAllRequests() {
 module.exports = {
   getLatestRequestsForPatient,
   createEmergencyRequest,
+  createRequest,
   getRequestById,
   getDriverRequests,
   updateRequestStatus,

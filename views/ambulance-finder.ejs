@@ -15,7 +15,16 @@
                 <input type="hidden" name="ambulance_id" value="<%= ambulance.id %>" />
                 <input type="hidden" name="latitude" value="" />
                 <input type="hidden" name="longitude" value="" />
-                <button type="submit" class="btn btn-sm btn-danger request-ambulance">Request Ambulance</button>
+                <% const userPhone = user && user.phone ? String(user.phone).trim() : ''; %>
+                <% if (userPhone) { %>
+                  <input type="hidden" name="phone" value="<%= userPhone %>" />
+                <% } else { %>
+                  <div class="mt-2">
+                    <label for="ambulancePhone-<%= ambulance.id %>" class="form-label small">Phone number</label>
+                    <input id="ambulancePhone-<%= ambulance.id %>" type="tel" name="phone" class="form-control form-control-sm" placeholder="e.g. 9876543210" required />
+                  </div>
+                <% } %>
+                <button type="submit" class="btn btn-sm btn-danger request-ambulance mt-3">Request Ambulance</button>
               </form>
             </div>
           </div>

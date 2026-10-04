@@ -5,7 +5,7 @@ async function requestAmbulance(req, res) {
   const { latitude, longitude, emergency_type, hospital_id, ambulance_id, guest_name, guest_phone, name, phone } = req.body;
   const isGuestRequest = !req.user || !req.user.id;
   const patientName = isGuestRequest ? (guest_name || name || 'Guest').trim() : req.user.name;
-  const patientPhone = isGuestRequest ? (guest_phone || phone || '').trim() : (req.user.phone || '').trim();
+  const patientPhone = (phone || guest_phone || (req.user && req.user.phone) || '').trim();
 
   console.log('requestAmbulance payload', {
     isGuestRequest,
@@ -19,13 +19,13 @@ async function requestAmbulance(req, res) {
     body: req.body
   });
 
-  if (isGuestRequest && !patientPhone) {
+  if (!patientPhone) {
     const errorMessage = 'Phone number is required to send an emergency request.';
     if (req.accepts('json') || req.is('application/json')) {
       return res.status(400).json({ success: false, message: errorMessage });
     }
     req.flash('error', errorMessage);
-    return res.redirect('/guest-sos');
+    return res.redirect(isGuestRequest ? '/guest-sos' : '/ambulance-finder');
   }
 
   try {
@@ -45,8 +45,8 @@ async function requestAmbulance(req, res) {
     const selectedAmbulanceId = ambulance_id || (availableAmbulances.length > 0 ? availableAmbulances[0].id : null);
     const requestPayload = {
       patient_id: req.user ? req.user.id : null,
-      guest_name: isGuestRequest ? patientName : null,
-      guest_phone: isGuestRequest ? patientPhone : null,
+      guest_name: patientName,
+      guest_phone: patientPhone,
       ambulance_id: selectedAmbulanceId,
       hospital_id: hospital_id || null,
       emergency_type: emergency_type || 'Medical',

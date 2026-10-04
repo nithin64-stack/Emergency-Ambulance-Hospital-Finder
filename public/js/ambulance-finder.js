@@ -5,7 +5,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
       const button = form.querySelector('.request-ambulance');
       const ambulanceId = form.dataset.ambulanceId || form.querySelector('input[name="ambulance_id"]').value;
-      console.log('Ambulance request clicked', { ambulanceId });
+      const phoneInput = form.querySelector('input[name="phone"]');
+      const phone = phoneInput ? phoneInput.value.trim() : '';
+      console.log('Ambulance request clicked', { ambulanceId, phone });
 
       if (!navigator.geolocation) {
         alert('Geolocation is not supported in this browser.');
@@ -24,6 +26,10 @@ document.addEventListener('DOMContentLoaded', () => {
           longitude: position.coords.longitude,
           emergency_type: 'Medical'
         };
+
+        if (phone) {
+          payload.phone = phone;
+        }
 
         console.log('Submitting ambulance request', payload);
 
